@@ -13,7 +13,7 @@ rejects = [	"the strongest people aren't always the people who win, but the peop
 
 prefixes = ["the","my","how","ok","so","this","love","what","why","where","hehe","i","help","there's","today","good","wow","you","not","bad","did","say","but"]
 
-prefixes = [pre + " " for pre in prefs]
+prefixes = [pre + " " for pre in prefixes]
 
 with open('keyfile', 'wb') as fp:
     pickle.dump(keys, fp)
@@ -22,4 +22,4 @@ with open('prefixes', 'wb') as fp:
     pickle.dump(prefixes, fp)
 
 with open('rejects', 'wb') as fp:
-	pickle.dump(rejects)
+	pickle.dump(rejects, fp)
