@@ -185,6 +185,7 @@ class AI(object):
 			else:
 				grammatical = False
 		except Exception as e:
+                    pass
 
 		lenght = (len(tweet) < 160)
 		is_new = (not self.is_prev(tweet))
