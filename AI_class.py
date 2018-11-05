@@ -179,10 +179,12 @@ class AI(object):
 			tweet = tweet[:-1]
 
 		try:
-			grammatical = (len(parser.parse(tweet)["corrections"]) < 2)
+			parsed = parser.parse(tweet)
+			if "corrections" in parsed:
+				grammatical = (len(parser.parse(tweet)["corrections"]) < 2)
+			else:
+				grammatical = False
 		except Exception as e:
-			print("==== weird no suggestion issues : {} ====".format(tweet))
-			return False
 
 		lenght = (len(tweet) < 160)
 		is_new = (not self.is_prev(tweet))
