@@ -202,7 +202,12 @@ class AI(object):
 			if at_tweet.created_at > now_7:
 				if len(self.queue) > 1:
 					tweet = self.queue.pop(0)
-					api.update_status(tweet, in_reply_to_status_id = at_tweet.id_str)
+
+					reply_user = api.get_user(at_tweet.user.id_str)
+
+					tweet = "@{} {}".format(reply_user.screen_name,tweet)
+
+					api.update_status(tweet, at_tweet.id_str)
 					self.save_current_queue()
 				else:
 					print("No elements in queue")
