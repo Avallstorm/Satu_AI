@@ -196,10 +196,7 @@ class AI(object):
 
 		new_tweets = api.search(q=query, count=10)
 
-		new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet]
-
-		for tweet in new_tweets:
-			print(tweet.text)
+		new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet.text and not tweet.in_reply_to_screen_name.lower() == "satu_ai"]
 
 		"""for at_tweet in new_tweets:
 			if at_tweet.created_at > now_7:
