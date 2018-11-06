@@ -42,7 +42,11 @@ class AI(object):
 	pref_loc = ""
 	pref = []
 
-	def __init__(self,model_loc,config_loc,vocab_loc,key_loc,rej_tweets_loc,pref_loc):
+	#List of queued tweets
+	queue_loc = ""
+	queue = []
+
+	def __init__(self,model_loc,config_loc,vocab_loc,key_loc,rej_tweets_loc,pref_loc,queue_loc):
 		#Return an AI object using the provided files (fails if not proper files)
 		self.model = model_loc
 		self.config = config_loc
@@ -50,8 +54,23 @@ class AI(object):
 		self.key_loc = key_loc
 		self.rej_tweets_loc = rej_tweets_loc
 		self.pref_loc = pref_loc
+		self.queue_loc = queue_loc
 		self.get_keys()
 		self.get_data(self.get_api())
+
+
+
+	def tweet_from_queue(self,api):
+		#Tweet out from queue if tweets exist
+		if len(self.queue) > 0:
+			tweet = self.queue.pop(0)
+			try:
+				api.update_status(tweet)
+				self.save_current_queue()
+			except Exception as e:
+				print("==================== {} ====================".format(e))
+		else:
+			print("No elements in queue")
 
 
 
@@ -80,6 +99,9 @@ class AI(object):
 
 		with open (self.pref_loc, 'rb') as fp:
 			self.pref = pickle.load(fp)
+
+		with open (self.queue_loc, 'rb') as fp:
+			self.queue = pickle.load(fp)
 
 
 
@@ -147,7 +169,7 @@ class AI(object):
 
 	def like_replies(self,api):
 		#Like replies to tweets the bot has made in the last _ amount of time
-		now_7 = datetime.datetime.now() - datetime.timedelta(days=1)
+		now_7 = datetime.datetime.now() - datetime.timedelta(hours=7)
 
 		public_tweets = tweepy.Cursor(api.user_timeline).items()
 		for tweet in public_tweets:
@@ -163,11 +185,49 @@ class AI(object):
 
 
 
+	def reply_to_ats(self,api):
+		#Reply to people who @ satu
+
+		now_7 = datetime.datetime.now() - datetime.timedelta(hours=7)
+
+		searchquery = "@Satu_AI"
+		retweet_filter='-filter:retweets'
+		q=searchquery+retweet_filter
+
+		new_tweets = api.search(q=searchQuery, count=tweetsPerQry)
+
+		for tweet in new_tweets:
+			print(tweet.text)
+
+		"""for at_tweet in new_tweets:
+			if at_tweet.created_at > now_7:
+				if len(self.queue) > 1:
+				tweet = self.queue.pop(0)
+				api.update_status(tweet, in_reply_to_status_id = at_tweet.id_str)
+				self.save_current_queue()"""
+
+
+
 	def save_rej_tweets(self,new_rejs):
 		#Save rejected tweets by adding new rejected tweets to old list
 		self.rej_tweets += new_rejs
 		with open(self.rej_tweet_loc, 'wb') as fp:
 			pickle.dump(self.rej_tweets, fp)
+
+
+
+	def save_queue_tweets(self,new_queues):
+		#Save new tweets to tweet queue
+		self.queue += new_queues
+		with open(self.queue_loc, 'wb') ad fp:
+			pickle.dump(self.queue, fp)
+
+
+
+	def save_current_queue(self):
+		#Save current queue to file
+		with open(self.queue_loc, 'wb') ad fp:
+			pickle.dump(self.queue, fp)
 
 
 
@@ -185,6 +245,7 @@ class AI(object):
 			else:
 				grammatical = False
 		except Exception as e:
+			pass
 
 		lenght = (len(tweet) < 160)
 		is_new = (not self.is_prev(tweet))
