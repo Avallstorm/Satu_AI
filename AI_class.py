@@ -196,7 +196,7 @@ class AI(object):
 
 		new_tweets = api.search(q=query, count=10)
 
-                new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet]
+		new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet]
 
 		for tweet in new_tweets:
 			print(tweet.text)
