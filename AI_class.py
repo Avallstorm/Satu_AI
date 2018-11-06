@@ -219,25 +219,25 @@ class AI(object):
 	def save_queue_tweets(self,new_queues):
 		#Save new tweets to tweet queue
 		self.queue += new_queues
-		with open(self.queue_loc, 'wb') ad fp:
+		with open(self.queue_loc, 'wb') as fp:
 			pickle.dump(self.queue, fp)
 
 
 
 	def save_current_queue(self):
 		#Save current queue to file
-		with open(self.queue_loc, 'wb') ad fp:
+		with open(self.queue_loc, 'wb') as fp:
 			pickle.dump(self.queue, fp)
 
 
 
 	def tweet_filters(self,tweet):
 		#Boolean filter for outputs from generated tweets
-		parser = GingerIt()
-        grammatical = False
-
-		while tweet[-1] == "'":
-			tweet = tweet[:-1]
+                parser = GingerIt()
+                grammatical = False
+                
+                while tweet[-1] == "'":
+                    tweet = tweet[:-1]
 
 		try:
 			parsed = parser.parse(tweet)
