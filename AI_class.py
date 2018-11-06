@@ -188,7 +188,7 @@ class AI(object):
 	def reply_to_ats(self,api):
 		#Reply to people who @ satu
 
-		now_7 = datetime.datetime.now() - datetime.timedelta(hours=7)
+		now_3 = datetime.datetime.now() - datetime.timedelta(hours=3)
 
 		searchquery = "@Satu_AI"
 		retweet_filter='-filter:retweets'
@@ -199,7 +199,7 @@ class AI(object):
 		new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet.text and not tweet.in_reply_to_screen_name.lower() == "satu_ai"]
 
 		for at_tweet in new_tweets:
-			if at_tweet.created_at > now_7:
+			if at_tweet.created_at > now_3:
 				if len(self.queue) > 1:
 					tweet = self.queue.pop(0)
 
