@@ -234,6 +234,7 @@ class AI(object):
 	def tweet_filters(self,tweet):
 		#Boolean filter for outputs from generated tweets
 		parser = GingerIt()
+        grammatical = False
 
 		while tweet[-1] == "'":
 			tweet = tweet[:-1]
@@ -242,8 +243,7 @@ class AI(object):
 			parsed = parser.parse(tweet)
 			if "corrections" in parsed:
 				grammatical = (len(parser.parse(tweet)["corrections"]) < 2)
-			else:
-				grammatical = False
+                                
 		except Exception as e:
 			pass
 
