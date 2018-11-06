@@ -233,11 +233,11 @@ class AI(object):
 
 	def tweet_filters(self,tweet):
 		#Boolean filter for outputs from generated tweets
-				parser = GingerIt()
-				grammatical = False
-				
-				while tweet[-1] == "'":
-					tweet = tweet[:-1]
+		parser = GingerIt()
+		grammatical = False
+		
+		while tweet[-1] == "'":
+			tweet = tweet[:-1]
 
 		try:
 			parsed = parser.parse(tweet)
