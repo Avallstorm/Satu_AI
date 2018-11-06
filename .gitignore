@@ -2,5 +2,6 @@ setup_local.py
 keyfile
 prefixes
 rejects
+queue
 __pycache__/
 run
