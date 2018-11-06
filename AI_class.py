@@ -198,12 +198,12 @@ class AI(object):
 
 		new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet.text and not tweet.in_reply_to_screen_name.lower() == "satu_ai"]
 
-		"""for at_tweet in new_tweets:
+		for at_tweet in new_tweets:
 			if at_tweet.created_at > now_7:
 				if len(self.queue) > 1:
 				tweet = self.queue.pop(0)
 				api.update_status(tweet, in_reply_to_status_id = at_tweet.id_str)
-				self.save_current_queue()"""
+				self.save_current_queue()
 
 
 
