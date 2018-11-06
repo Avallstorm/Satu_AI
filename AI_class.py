@@ -192,9 +192,11 @@ class AI(object):
 
 		searchquery = "@Satu_AI"
 		retweet_filter='-filter:retweets'
-		q=searchquery+retweet_filter
+		query=searchquery+retweet_filter
 
-		new_tweets = api.search(q=searchQuery, count=tweetsPerQry)
+		new_tweets = api.search(q=query, count=10)
+
+                new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet]
 
 		for tweet in new_tweets:
 			print(tweet.text)
