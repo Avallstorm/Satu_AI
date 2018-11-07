@@ -4,6 +4,7 @@ warnings.filterwarnings("ignore")
 import tweepy
 import pickle
 import datetime
+import random
 
 from textgenrnn import textgenrnn
 from gingerit.gingerit import GingerIt
@@ -180,7 +181,6 @@ class AI(object):
 						api.create_favorite(reply.id)
 						print("Liked Tweet: {}".format(reply.text))
 					except Exception as e:
-						print("==================== {} ====================".format(e))
 						pass
 
 
@@ -188,7 +188,7 @@ class AI(object):
 	def reply_to_ats(self,api):
 		#Reply to people who @ satu
 
-		now_3 = datetime.datetime.now() - datetime.timedelta(hours=3)
+		now_7 = datetime.datetime.now() - datetime.timedelta(hours=7)
 
 		searchquery = "@Satu_AI"
 		retweet_filter='-filter:retweets'
@@ -196,10 +196,12 @@ class AI(object):
 
 		new_tweets = api.search(q=query, count=10)
 
-		new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet.text and not tweet.in_reply_to_screen_name.lower() == "satu_ai"]
+		new_tweets = [tweet for tweet in new_tweets if "@satu_ai" in tweet.text]
+
+		rand = random.randint(1,10)
 
 		for at_tweet in new_tweets:
-			if at_tweet.created_at > now_3:
+			if at_tweet.created_at > now_7 and rand > 3:
 				if len(self.queue) > 1:
 					tweet = self.queue.pop(0)
 
@@ -208,6 +210,14 @@ class AI(object):
 					tweet = "@{} {}".format(reply_user.screen_name,tweet)
 
 					api.update_status(tweet, at_tweet.id_str)
+					print("Replied to Tweet: {} with {}".format(reply.text,tweet))
+
+					try:
+						api.create_favorite(at_tweet.id)
+						print("Liked Tweet: {}".format(at_tweet.text))
+					except Exception as e:
+						pass
+
 					self.save_current_queue()
 				else:
 					print("No elements in queue")
