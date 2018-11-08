@@ -5,6 +5,7 @@ import tweepy
 import pickle
 import datetime
 import random
+import json
 
 from textgenrnn import textgenrnn
 from gingerit.gingerit import GingerIt
@@ -13,7 +14,11 @@ from fuzzywuzzy import fuzz
 class AI(object):
 	#A class to define a RNN trained twitter bot with useful functions for interacting with twitter
 
-	#Attributed 
+	#Attributes
+
+	#Twitter names
+	name = ""
+	screen_name = ""
 
 	#Version code comprising of [int,int,int] for major, model, minor updates
 	version = []
@@ -30,34 +35,28 @@ class AI(object):
 	access_token_secret = ""
 
 	#File locations for various important strings
-	key_loc = ""
+	data_loc = ""
+
+	#Full data dictionary (for saving to file)
+	data = {}
 
 	#Previous tweets made by this bot
-	prev_tweets = []
+	previous = []
 
 	#Rejected tweets made by this bot
-	rej_tweet_loc = ""
-	rej_tweets = []
+	rejected = []
 
 	#List of possible prefixes for tweets
-	pref_loc = ""
-	pref = []
+	prefixes = []
 
 	#List of queued tweets
-	queue_loc = ""
 	queue = []
 
-	def __init__(self,model_loc,config_loc,vocab_loc,key_loc,rej_tweets_loc,pref_loc,queue_loc):
+	def __init__(self,data_loc):
 		#Return an AI object using the provided files (fails if not proper files)
-		self.model = model_loc
-		self.config = config_loc
-		self.vocab = vocab_loc
-		self.key_loc = key_loc
-		self.rej_tweets_loc = rej_tweets_loc
-		self.pref_loc = pref_loc
-		self.queue_loc = queue_loc
-		self.get_keys()
-		self.get_data(self.get_api())
+		self.data_loc = data_loc
+		self.get_data_file()
+		self.get_data_twitter(self.get_api())
 
 
 
@@ -75,34 +74,34 @@ class AI(object):
 
 
 
-	def get_keys(self):
-		#Get various twitter keys from given will formatted file
-		with open(self.key_loc, "rb") as fp:
-			itemlist = pickle.load(fp)
-			self.consumer_key = itemlist[0]
-			self.consumer_secret = itemlist[1]
-			self.access_token = itemlist[2]
-			self.access_token_secret = itemlist[3]
+	def get_data_file(self):
+		#Get various data from config
+		with open(self.data_loc, encoding='utf-8') as fp:
+			data = json.load(fp)
+			self.consumer_key = data["consumer_key"]
+			self.consumer_secret = data["consumer_secret"]
+			self.access_token = data["access_token"]
+			self.access_token_secret = data["access_token_secret"]
+			self.model = data["model"]
+			self.config = data["config"]
+			self.vocab = data["vocab"]
+			self.queue = data["queue"]
+			self.prefixes = data["prefixes"]
+			self.rejected = data["rejected"]
+			self.data = data
 
 
 
-	def get_data(self,api):
-		#Get current version from twitter bio, get previous tweets from twitter, get rejected tweets from file
-
-		bio = api.get_user("Satu_AI").description
-		self.version = [int(bio[-5:][0]),int(bio[-5:][2]),int(bio[-5:][4])]
-
+	def get_data_twitter(self,api):
+		#Get version,name,display name, and previous tweets from twitter account
+		user = api.me()
+		bio = user.description
 		public_tweets_all = tweepy.Cursor(api.user_timeline).items()
-		self.prev_tweets = [tweet.text for tweet in public_tweets_all]
 
-		with open (self.rej_tweets_loc, 'rb') as fp:
-			self.rej_tweets = pickle.load(fp)
-
-		with open (self.pref_loc, 'rb') as fp:
-			self.pref = pickle.load(fp)
-
-		with open (self.queue_loc, 'rb') as fp:
-			self.queue = pickle.load(fp)
+		self.version = [int(bio[-5:][0]),int(bio[-5:][2]),int(bio[-5:][4])]
+		self.previous = [tweet.text for tweet in public_tweets_all]
+		self.screen_name = user.screen_name
+		self.name = user.name
 
 
 
@@ -116,7 +115,7 @@ class AI(object):
 	def easy_talk(self,ind):
 		#Generate tweets from model using default parameters and filtering through all filters
 		count = 0
-		prefix = self.pref[(ind%len(self.pref))]
+		prefix = self.prefixes[(ind%len(self.prefixes))]
 		while True:
 			count = count + 1
 
@@ -126,7 +125,7 @@ class AI(object):
 
 			if count%100 == 0:
 				print("Could not produce tweet with given prefix: {}".format(prefix))
-				raise Exception
+				return ""
 
 			pos_list = self.gen_talk(0.2,prefix,5)
 
@@ -190,7 +189,7 @@ class AI(object):
 
 		now_7 = datetime.datetime.now() - datetime.timedelta(hours=7)
 
-		searchquery = "@Satu_AI"
+		searchquery = ("@" + self.screen_name)
 		retweet_filter='-filter:retweets'
 		query=searchquery+retweet_filter
 
@@ -210,7 +209,8 @@ class AI(object):
 					tweet = "@{} {}".format(reply_user.screen_name,tweet)
 
 					api.update_status(tweet, at_tweet.id_str)
-					print("Replied to Tweet: {} with {}".format(reply.text,tweet))
+
+					print("Replied to Tweet: {} with {}".format(at_tweet.text,tweet))
 
 					try:
 						api.create_favorite(at_tweet.id)
@@ -226,24 +226,27 @@ class AI(object):
 
 	def save_rej_tweets(self,new_rejs):
 		#Save rejected tweets by adding new rejected tweets to old list
-		self.rej_tweets += new_rejs
-		with open(self.rej_tweet_loc, 'wb') as fp:
-			pickle.dump(self.rej_tweets, fp)
+		self.rejected += new_rejs
+		self.data["rejected"] = self.rejected
+		with open(self.data_loc, 'wb') as fp:
+			json.dump(self.data, fp)
 
 
 
 	def save_queue_tweets(self,new_queues):
 		#Save new tweets to tweet queue
 		self.queue += new_queues
-		with open(self.queue_loc, 'wb') as fp:
-			pickle.dump(self.queue, fp)
+		self.data["queue"] = self.queue
+		with open(self.data_loc, 'wb') as fp:
+			json.dump(self.data, fp)
 
 
 
 	def save_current_queue(self):
 		#Save current queue to file
-		with open(self.queue_loc, 'wb') as fp:
-			pickle.dump(self.queue, fp)
+		self.data["queue"] = self.queue
+		with open(self.data_loc, 'wb') as fp:
+			json.dump(self.data, fp)
 
 
 
@@ -273,7 +276,7 @@ class AI(object):
 
 	def is_prev(self,tweet):
 		#Boolean filter for checking if tweet is similar to a previous tweet
-		for pre_tweet in self.prev_tweets:
+		for pre_tweet in self.previous:
 			if (fuzz.ratio(pre_tweet,tweet) > 80):
 				return True
 		return False
@@ -282,7 +285,7 @@ class AI(object):
 
 	def is_bad(self,tweet):
 		#Boolean filter for checkout if a tweet
-		for bad_tweet in self.rej_tweets:
+		for bad_tweet in self.rejected:
 			if (fuzz.ratio(bad_tweet,tweet) > 80):
 				return True
 		return False
