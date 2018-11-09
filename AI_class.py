@@ -24,7 +24,7 @@ class AI(object):
 	version = []
 
 	#Model, Config, Vocab files from tweet-generator trained RNN
-	only_weights
+	only_weights = False
 
 	model = ""
 	config = ""
