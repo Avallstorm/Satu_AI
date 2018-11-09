@@ -234,8 +234,8 @@ class AI(object):
 		#Save rejected tweets by adding new rejected tweets to old list
 		self.rejected += new_rejs
 		self.data["rejected"] = self.rejected
-		with open(self.data_loc, 'wb') as fp:
-			json.dump(self.data, fp)
+		with open(self.data_loc, "w", encoding='utf-8') as fp:
+			json.dump(self.data, fp, indent=4, sort_keys=True)
 
 
 
@@ -243,16 +243,16 @@ class AI(object):
 		#Save new tweets to tweet queue
 		self.queue += new_queues
 		self.data["queue"] = self.queue
-		with open(self.data_loc, 'wb') as fp:
-			json.dump(self.data, fp)
+		with open(self.data_loc, "w", encoding='utf-8') as fp:
+			json.dump(self.data, fp, indent=4, sort_keys=True)
 
 
 
 	def save_current_queue(self):
 		#Save current queue to file
 		self.data["queue"] = self.queue
-		with open(self.data_loc, 'wb') as fp:
-			json.dump(self.data, fp)
+		with open(self.data_loc, "w", encoding='utf-8') as fp:
+			json.dump(self.data, fp, indent=4, sort_keys=True)
 
 
 
