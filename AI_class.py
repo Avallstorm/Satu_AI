@@ -24,6 +24,8 @@ class AI(object):
 	version = []
 
 	#Model, Config, Vocab files from tweet-generator trained RNN
+	only_weights
+
 	model = ""
 	config = ""
 	vocab = ""
@@ -52,9 +54,10 @@ class AI(object):
 	#List of queued tweets
 	queue = []
 
-	def __init__(self,data_loc):
+	def __init__(self,data_loc,only_weights = False):
 		#Return an AI object using the provided files (fails if not proper files)
 		self.data_loc = data_loc
+		self.only_weights = only_weights
 		self.get_data_file()
 		self.get_data_twitter(self.get_api())
 
@@ -107,7 +110,10 @@ class AI(object):
 
 	def gen_talk(self,temp,pre,num,as_list=True):
 		#Generate tweets from model using the provided parameters
-		AI_core = textgenrnn(weights_path=self.model,vocab_path=self.vocab,config_path=self.config)
+		if self.only_weights:
+			AI_core = textgenrnn(weights_path=self.model)
+		else:
+			AI_core = textgenrnn(weights_path=self.model,vocab_path=self.vocab,config_path=self.config)
 		return AI_core.generate(prefix=pre,n=num,temperature=temp,return_as_list=as_list)
 
 
