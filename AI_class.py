@@ -158,7 +158,7 @@ class AI(object):
 			print("Error no correct increment type given")
 			raise Exception # Define proper exceptions later
 
-		bio = "Please go easy on me, I'm still in alpha Version {}.{}.{}".format(self.version[0],self.version[1],self.version[2])
+		bio = "Satu, She/Her, Your robot daughter ❤️ \nPlease go easy on me, I'm still in alpha Version {}.{}.{}".format(self.version[0],self.version[1],self.version[2])
 
 		status = 'Update! Current version is {}.{}.{}! \n"{}"'.format(self.version[0],self.version[1],self.version[2],message)
 
