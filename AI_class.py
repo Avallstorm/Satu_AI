@@ -58,8 +58,8 @@ class AI(object):
 		#Return an AI object using the provided files (fails if not proper files)
 		self.data_loc = data_loc
 		self.only_weights = only_weights
-		self.get_data_file()
-		self.get_data_twitter(self.get_api())
+		self.__get_data_file()
+		self.__get_data_twitter(self.get_api())
 
 
 
@@ -77,7 +77,7 @@ class AI(object):
 
 
 
-	def get_data_file(self):
+	def __get_data_file(self):
 		#Get various data from config
 		with open(self.data_loc, encoding='utf-8') as fp:
 			data = json.load(fp)
@@ -95,7 +95,7 @@ class AI(object):
 
 
 
-	def get_data_twitter(self,api):
+	def __get_data_twitter(self,api):
 		#Get version,name,display name, and previous tweets from twitter account
 		user = api.me()
 		bio = user.description
@@ -137,7 +137,7 @@ class AI(object):
 
 			for tweet in pos_list:
 				try:
-					if self.tweet_filters(tweet):
+					if self.__tweet_filters(tweet):
 						return tweet
 				except Exception as e:
 					print("==================== {} ====================".format(e))
@@ -187,6 +187,24 @@ class AI(object):
 						print("Liked Tweet: {}".format(reply.text))
 					except Exception as e:
 						pass
+
+
+
+	def like_followers_posts(self,api,num):
+		#Like num amount of tweets from randomly chosen followers
+		user_tweets = []
+		for friend in tweepy.Cursor(api.friends).items():
+		    # Process the friend here
+		    tweets = api.user_timeline(screen_name = friend.screen_name, count = 10, include_rts = False)
+		    for tweet in tweets:
+		    	user_tweets.append(tweet)
+		for i in range(num):
+			while True:
+				rand = random.randint(0,len(user_tweets)-1)
+				if (not user_tweets[rand].favorited) and user_tweets[rand].text[0] != '@':
+					api.create_favorite(user_tweets[rand].id_str)
+					print("liked tweet: {}".format(user_tweets[rand].text))
+					break
 
 
 
@@ -256,7 +274,7 @@ class AI(object):
 
 
 
-	def tweet_filters(self,tweet):
+	def __tweet_filters(self,tweet):
 		#Boolean filter for outputs from generated tweets
 		parser = GingerIt()
 		grammatical = False
@@ -273,14 +291,14 @@ class AI(object):
 			pass
 
 		lenght = (len(tweet) < 160)
-		is_new = (not self.is_prev(tweet))
-		is_acceptable = (not self.is_bad(tweet))
+		is_new = (not self.__is_prev(tweet))
+		is_acceptable = (not self.__is_bad(tweet))
 
 		return (grammatical and lenght and is_new and is_acceptable)
 
 
 
-	def is_prev(self,tweet):
+	def __is_prev(self,tweet):
 		#Boolean filter for checking if tweet is similar to a previous tweet
 		for pre_tweet in self.previous:
 			if (fuzz.ratio(pre_tweet,tweet) > 80):
@@ -289,7 +307,7 @@ class AI(object):
 
 
 
-	def is_bad(self,tweet):
+	def __is_bad(self,tweet):
 		#Boolean filter for checkout if a tweet
 		for bad_tweet in self.rejected:
 			if (fuzz.ratio(bad_tweet,tweet) > 80):
@@ -312,6 +330,7 @@ class AI(object):
 
 
 	def get_api(self):
+		#Get twitter API using credentials 
 		auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
 		auth.set_access_token(self.access_token, self.access_token_secret)
 		return tweepy.API(auth)
