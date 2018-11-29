@@ -60,6 +60,7 @@ class AI(object):
 		self.only_weights = only_weights
 		self.__get_data_file()
 		self.__get_data_twitter(self.get_api())
+		self.__get_prefixes(self.get_api())
 
 
 
@@ -105,6 +106,20 @@ class AI(object):
 		self.previous = [tweet.text for tweet in public_tweets_all]
 		self.screen_name = user.screen_name
 		self.name = user.name
+
+
+
+	def __get_prefixes(self,api):
+		#Get a list of prefixes from friend's tweets
+		prefs = []
+		for friend in tweepy.Cursor(api.friends).items():
+		    # Process the friend here
+		    tweets = api.user_timeline(screen_name = friend.screen_name, count = 15, include_rts = False)
+		    for tweet in tweets:
+		    	words = tweet.text.replace('\n',' ').split(' ')
+		    	if (not words[0] in prefs) and (words[0][0] != '@'):
+		    		prefs.append(words[0])
+		self.prefixes = prefs
 
 
 
