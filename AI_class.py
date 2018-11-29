@@ -202,8 +202,12 @@ class AI(object):
 			while True:
 				rand = random.randint(0,len(user_tweets)-1)
 				if (not user_tweets[rand].favorited) and user_tweets[rand].text[0] != '@':
-					api.create_favorite(user_tweets[rand].id_str)
-					print("liked tweet: {}".format(user_tweets[rand].text))
+					like_rand = random.randint(0,1)
+					if like_rand == 0:
+						api.create_favorite(user_tweets[rand].id_str)
+						print("liked tweet: {}".format(user_tweets[rand].text))
+					else:
+						print("decided not to like a tweet")
 					break
 
 
