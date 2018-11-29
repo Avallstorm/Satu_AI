@@ -164,11 +164,11 @@ class AI(object):
 		#Update version in bio and make update tweet based on provided message and increment class
 
 		if inc_type == "Major":
-			self.version[0] += self.version[0]
+			self.version[0] += 1
 		elif inc_type == "Model":
-			self.version[1] += self.version[1]
+			self.version[1] += 1
 		elif inc_type == "Minor":
-			self.version[2] += self.version[2]
+			self.version[2] += 1
 		else:
 			print("Error no correct increment type given")
 			raise Exception # Define proper exceptions later
