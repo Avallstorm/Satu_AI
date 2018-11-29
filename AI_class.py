@@ -175,11 +175,11 @@ class AI(object):
 
 	def like_replies(self,api):
 		#Like replies to tweets the bot has made in the last _ amount of time
-		now_7 = datetime.datetime.now() - datetime.timedelta(hours=7)
+		now_12 = datetime.datetime.now() - datetime.timedelta(hours=12)
 
 		public_tweets = tweepy.Cursor(api.user_timeline).items()
 		for tweet in public_tweets:
-			if tweet.created_at > now_7:
+			if tweet.created_at > now_12:
 				replies = self.__get_replies(tweet,api)
 				for reply in replies:
 					try:
@@ -215,7 +215,7 @@ class AI(object):
 	def reply_to_ats(self,api):
 		#Reply to people who @ satu
 
-		now_7 = datetime.datetime.now() - datetime.timedelta(hours=7)
+		now_12 = datetime.datetime.now() - datetime.timedelta(hours=12)
 
 		searchquery = ("@" + self.screen_name)
 		retweet_filter='-filter:retweets'
@@ -228,7 +228,7 @@ class AI(object):
 		rand = random.randint(1,10)
 
 		for at_tweet in new_tweets:
-			if at_tweet.created_at > now_7 and rand > 3:
+			if at_tweet.created_at > now_12 and rand > 3:
 				if len(self.queue) > 1:
 					tweet = self.queue.pop(0)
 
