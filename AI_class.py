@@ -114,7 +114,7 @@ class AI(object):
 		prefs = []
 		for friend in tweepy.Cursor(api.friends).items():
 		    # Process the friend here
-		    tweets = api.user_timeline(screen_name = friend.screen_name, count = 15, include_rts = False)
+		    tweets = api.user_timeline(screen_name = friend.screen_name, count = 20, include_rts = False)
 		    for tweet in tweets:
 		    	words = tweet.text.replace('\n',' ').split(' ')
 		    	if (not words[0] in prefs) and (words[0][0] != '@'):
@@ -144,8 +144,9 @@ class AI(object):
 				print("Count reached multiple of 10 attempts, current attempts number: {}".format(count))
 				pass
 
-			if count%100 == 0:
+			if count%30 == 0:
 				print("Could not produce tweet with given prefix: {}".format(prefix))
+				self.prefixes.remove(prefix)
 				return ""
 
 			pos_list = self.gen_talk(0.2,prefix,5)
