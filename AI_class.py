@@ -249,7 +249,7 @@ class AI(object):
 
 		for at_tweet in new_tweets:
 			if at_tweet.created_at > now_12 and rand > 3:
-				if len(self.queue) > 1:
+				if len(self.queue) > 0:
 					tweet = self.queue.pop(0)
 
 					reply_user = api.get_user(at_tweet.user.id_str)
