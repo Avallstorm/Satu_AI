@@ -54,6 +54,9 @@ class AI(object):
 	#List of queued tweets
 	queue = []
 
+	#List of users who have interacted with this bot
+	acquaintances = {}
+
 	def __init__(self,data_loc,only_weights = False):
 		#Return an AI object using the provided files (fails if not proper files)
 		self.data_loc = data_loc
@@ -92,6 +95,7 @@ class AI(object):
 			self.queue = data["queue"]
 			self.prefixes = data["prefixes"]
 			self.rejected = data["rejected"]
+			self.acquaintances = data["acquaintances"]
 			self.data = data
 
 
@@ -265,6 +269,33 @@ class AI(object):
 					self.save_current_queue()
 				else:
 					print("No elements in queue")
+
+
+
+	def get_interacts(self,api,hours):
+		#Add count of twitter interactions to acquaintances
+		mentions = api.mentions_timeline(count=100)
+		now_var = datetime.datetime.now() - datetime.timedelta(hours=hours)
+		for mention in mentions:
+			if mention.created_at > now_var:
+				if not mention.user.id_str in self.acquaintances:
+					self.acquaintances[mention.user.id_str] = [mention.text]
+				else:
+					if not mention.text in self.acquaintances[mention.user.id_str]:
+						self.acquaintances[mention.user.id_str].append(mention.text)
+
+		with open(self.data_loc, "w", encoding='utf-8') as fp:
+			json.dump(self.data, fp, indent=4, sort_keys=True)
+
+
+
+	def recommend_followers(self,api,threshold):
+		#Recommend followers based on interaction library
+		friends = [friend.id_str for friend in tweepy.Cursor(api.friends).items()]
+		for key,val in self.acquaintances.items():
+			if len(val) >= threshold and not key in friends:
+				user = api.get_user(key)
+				print("Recommended user to follow: {}".format(user.screen_name))
 
 
 
