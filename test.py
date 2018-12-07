@@ -1,6 +1,6 @@
-from AI_class import AI
+from src.AI_class import AI
 
-data = "config.json"
+data = "src/config.json"
 
 Satu = AI(data)
 
@@ -10,4 +10,4 @@ print(Satu.screen_name)
 print(Satu.version)
 print(Satu.model)
 
-print(Satu.queue)
+print(Satu.prefixes)

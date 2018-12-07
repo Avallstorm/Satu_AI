@@ -232,7 +232,7 @@ class AI(object):
 
 
 
-	def reply_to_ats(self,api):
+	def suggest_replies(self,api):
 		#Reply to people who @ satu
 
 		now_12 = datetime.datetime.now() - datetime.timedelta(hours=12)

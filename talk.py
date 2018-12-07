@@ -1,8 +1,8 @@
-from AI_class import AI
+from src.AI_class import AI
 
-data = "config.json"
+data = "src/config.json"
 
-Satu = AI(data)
+Satu = AI(data,only_weights=True)
 
 for i in range(100):
 	print(Satu.easy_talk(i))

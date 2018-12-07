@@ -1,0 +1,17 @@
+{
+
+	"consumer_key" : "75NB6SuRC2esZYH5AFB8Fymui",
+	"consumer_secret" : "Q8nPtUNBAESp1DypbwBcFc500s00jsx7IMjtgttaggfjv2xnmn",
+	"access_token" : "867445933486870529-iDa56aD5XLdn3LtqMNbMbza4r0mwn3W",
+	"access_token_secret" : "RV35h2HWTurx0KxWodoE9rNx8FCeHH60x2t67cx6B9n6Y",
+
+	"model" : "models/model_0_2/Satu_0_2_weights.hdf5",
+	"config" : "models/model_0_2/Satu_0_2_config.json",
+	"vocab" : "model/model_0_2/Satu_0_2_vocab.json",
+
+	"queue": [],
+	"prefixes" : ["this ","that ","love ", "wild "],
+	"rejected" : [],
+	"acquaintances" : {}
+
+}

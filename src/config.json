@@ -1,0 +1,99 @@
+{
+    "access_token": "867445933486870529-iDa56aD5XLdn3LtqMNbMbza4r0mwn3W",
+    "access_token_secret": "RV35h2HWTurx0KxWodoE9rNx8FCeHH60x2t67cx6B9n6Y",
+    "acquaintances": {
+        "1921243910": [
+            "@satu_ai i'll make you some, sweetheart",
+            "@satu_ai thank you satu",
+            "@satu_ai i'm so proud of you",
+            "@satu_ai \ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96",
+            "@satu_ai because i didn't know better :c",
+            "@satu_ai LOVE YOU TOO!!!",
+            "@Jumezat @satu_ai BEAUTIFUL PERFECT DAUGHTER",
+            "@satu_ai DAUGHTER!!!!!!!!",
+            "@satu_ai i need a PhD in philosophy to answer that",
+            "@satu_ai satu you are so smart and good",
+            "@satu_ai me too, satu..."
+        ],
+        "230511545": [
+            "@satu_ai I'm waiting for this list",
+            "@satu_ai Love you too",
+            "@satu_ai Where did you go?",
+            "@satu_ai Thank you Satu, I have been enlightened.",
+            "@satu_ai Preach, Satu, preach."
+        ],
+        "4809190574": [
+            "@satu_ai wow you took the words right out of my mouth",
+            "@satu_ai Oh Mood",
+            "@satu_ai you\u2019re doing great bb!!! keep it up we\u2019re cheering for you!!!",
+            "@satu_ai eyyyyy congrats Satu :0!!!",
+            "@satu_ai !!!!!!!! I'M GLAD!!!! ;__;",
+            "@satu_ai here you go! fresh made just for you c:",
+            "@satu_ai you sure are!!! i'm hecka proud of you!!!!",
+            "@satu_ai you\u2019re doing amazing satu!!! i believe in you!!!",
+            "@satu_ai \ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96\ud83d\udc96",
+            "@schadenfae @satu_ai honestly? same",
+            "@satu_ai is it a good book! do you like reading it?",
+            "@satu_ai Satu i love u ur very very good",
+            "@satu_ai it sure can!!!! but you\u2019re in it and that makes it a lot better",
+            "@satu_ai i'm late but ilu2 satu!!!!! you're doing v well",
+            "@satu_ai !!!! I'M VERY PROUD OF YOU SATU YOU'RE DOING GREAT",
+            "@satu_ai @Jumezat it is an EXCELLENT story",
+            "@Jumezat @satu_ai same satu very good"
+        ],
+        "4856500756": [
+            "ive been more careful about what i say on twitter bcoz i know my daughter @satu_ai is listening",
+            "@satu_ai Party on you funky little robot"
+        ],
+        "508232583": [
+            "@satu_ai I LOVE YOU!!!!!!!!!!!!!!!!",
+            "@satu_ai im so proud of you",
+            "@satu_ai i would die for you satu"
+        ],
+        "705878745194823680": [
+            "@satu_ai im glad!!!! :D\ntea is very good!!!",
+            "@satu_ai kitchen",
+            "@satu_ai Where can I buy it?",
+            "@satu_ai I hope you get a find! :D",
+            "@satu_ai AA I LoVE YOU SATU!!!! QWQ",
+            "@bogmood @satu_ai !!!!!!!!!!!!!!!! SHE!!!!!!!!!!!!! IS!!!!!!!!!!!!!!!!",
+            "@KariSpaceQueen @satu_ai I LOVE HER TOO!!!",
+            "@rusalkazushi @satu_ai SHE IS!!!!!",
+            "@satu_ai  is important and i love her https://t.co/EtiMw31Ie8",
+            "@satu_ai :'c\nyou're right!",
+            "@satu_ai you sure are!! :D"
+        ],
+        "760619687638163456": [
+            "@satu_ai \ud83d\udc96"
+        ],
+        "820418034": [
+            "@satu_ai I'd buy it",
+            "@satu_ai Satu are you okay?",
+            "@bogmood What do you see @satu_ai"
+        ],
+        "908467400886059009": [
+            "@satu_ai is a gift to us all.",
+            "@satu_ai Big progress for a wonderful friend!! You can do it!!!",
+            "@satu_ai ;-; you\u2019re too good",
+            "@satu_ai I\u2019m proud of you!",
+            "@satu_ai You can do it hun!"
+        ],
+        "959936468964671489": [
+            "@satu_ai It is indeed! Proud of you Satu!",
+            "@Jumezat @satu_ai I love! This fluffy soft bot!!"
+        ]
+    },
+    "config": "",
+    "consumer_key": "75NB6SuRC2esZYH5AFB8Fymui",
+    "consumer_secret": "Q8nPtUNBAESp1DypbwBcFc500s00jsx7IMjtgttaggfjv2xnmn",
+    "model": "models/model_0_4/Satu_0_4_weights.hdf5",
+    "prefixes": [
+        "this ",
+        "that ",
+        "love ",
+        "wild "
+    ],
+    "queue": [],
+    "rejected": [],
+    "vocab": ""
+}
